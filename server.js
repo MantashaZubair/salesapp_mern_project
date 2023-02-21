@@ -1,5 +1,6 @@
 const express = require("express")
 const dotenv = require('dotenv')
+const path = require('path')
 const authRoutes = require("./routes/authRoutes")
 const salesRoutes = require("./routes/salesRoutes")
 const connectDB = require("./config/db")
@@ -25,7 +26,12 @@ app.use(cors())
 app.use("/api/v1/auth/", authRoutes)
 app.use("/api/v1/sales/", salesRoutes)
 
+//static files
+app.use(express.static(path.join(__dirname,'./salesapp_frontend/build')))
 
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'./client/build/index.html'))
+})
 
 //port
 const PORT = process.env.PORT||8000
